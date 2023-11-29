@@ -1,0 +1,91 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+struct Student {
+    int rollNo;
+    std::string name;
+    float SGPA;
+};
+
+ 
+void merge(std::vector<Student>& students, int left, int mid, int right) {
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+
+    
+    std::vector<Student> L(n1), R(n2);
+
+     
+    for (int i = 0; i < n1; i++)
+        L[i] = students[left + i];
+    for (int j = 0; j < n2; j++)
+        R[j] = students[mid + 1 + j];
+
+     
+    int i = 0, j = 0, k = left;
+    while (i < n1 && j < n2) {
+        if (L[i].SGPA >= R[j].SGPA) {
+            students[k] = L[i];
+            i++;
+        } else {
+            students[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+
+     
+    while (i < n1) {
+        students[k] = L[i];
+        i++;
+        k++;
+    }
+
+   
+    while (j < n2) {
+        students[k] = R[j];
+        j++;
+        k++;
+    }
+}
+
+
+void mergeSort(std::vector<Student>& students, int left, int right) {
+    if (left < right) {
+        int mid = left + (right - left) / 2;
+
+       
+        mergeSort(students, left, mid);
+        mergeSort(students, mid + 1, right);
+
+        
+        merge(students, left, mid, right);
+    }
+}
+
+int main() {
+    std::vector<Student> students = {
+        {1, "Alice", 9.5},
+        {2, "Bob", 8.9},
+        {3, "Charlie", 9.8},
+        
+    };
+
+    int numStudents = students.size();
+
+   
+    mergeSort(students, 0, numStudents - 1);
+
+    std::cout << "Top Students:" << std::endl;
+    int count = 0;
+    for (const auto& student : students) {
+        if (count >= 10) {
+            break;
+        }
+        std::cout << student.rollNo << ". Roll No: " << student.rollNo << ", Name: " << student.name << ", SGPA: " << student.SGPA << std::endl;
+        count++;
+    }
+
+    return 0;
+}

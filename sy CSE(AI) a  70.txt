@@ -1,0 +1,55 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+struct Student {
+    int rollNo;
+    std::string name;
+    double sgpa;
+};
+
+void insertionSort(std::vector<Student> &students) {
+    int n = students.size();
+    for (int i = 1; i < n; ++i) {
+        Student key = students[i];
+        int j = i - 1;
+
+        while (j >= 0 && students[j].name > key.name) {
+            students[j + 1] = students[j];
+            j = j - 1;
+        }
+        students[j + 1] = key;
+    }
+}
+
+void printStudents(const std::vector<Student> &students) {
+    for (const auto &student : students) {
+        std::cout << "Roll No: " << student.rollNo << ", Name: " << student.name << ", SGPA: " << student.sgpa << std::endl;
+    }
+}
+
+int main() {
+    std::vector<Student> studentDatabase = {
+        {101, "Alice", 3.8},
+        {102, "Bob", 3.5},
+        {103, "Charlie", 3.9},
+        {104, "David", 3.2},
+        {105, "Emily", 3.7},
+        {106, "Frank", 3.4},
+        {107, "Grace", 3.6},
+        {108, "Henry", 3.1},
+        {109, "Isabel", 3.9},
+        {110, "Jack", 3.3},
+
+    };
+
+    std::cout << "Before sorting:" << std::endl;
+    printStudents(studentDatabase);
+
+    insertionSort(studentDatabase);
+
+    std::cout << "\nAfter sorting by name (alphabetically):" << std::endl;
+    printStudents(studentDatabase);
+
+    return 0;
+}
